@@ -182,6 +182,7 @@ img{max-width:100%;}
   display:grid;place-items:center;background:var(--surface-2);
   font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);
 }
+.donetag.curso{background:var(--gold-wash);color:var(--gold);}
 .donetag{
   display:inline-flex;align-items:center;gap:5px;background:var(--green-wash);color:var(--green);
   font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:600;
@@ -474,7 +475,7 @@ img{max-width:100%;}
 
 /* pestañas */
 .tabs{
-  flex:none;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);
+  flex:none;display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);
   background:color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:9px 6px 22px;
 }
@@ -604,39 +605,6 @@ img{max-width:100%;}
           </div>
         </section>
 
-        <!-- ═════ YO ═════ -->
-        <section class="view" id="v-yo">
-          <div class="head">
-            <p class="date">63 kg · 155 cm · meta 53 kg</p>
-            <h2>Tus números</h2>
-          </div>
-          <div class="macros">
-            <div class="macro"><div class="k">Comer al día</div><div class="v">1.450<small>kcal</small></div></div>
-            <div class="macro"><div class="k">Proteína</div><div class="v">130<small>g</small></div></div>
-            <div class="macro"><div class="k">Carbohidrato</div><div class="v">120<small>g</small></div></div>
-            <div class="macro"><div class="k">Grasa</div><div class="v">50<small>g</small></div></div>
-          </div>
-          <div class="card">
-            <p class="card-label">La progresión, semana a semana</p>
-            <ul class="rules">
-              <li><span class="w">SEM 1</span><span>Aprender y anotar. Deja <b>3 reps en el tanque</b> en cada serie.</span></li>
-              <li><span class="w">SEM 2</span><span>Suma <b>2 repeticiones</b> a cada serie, mismo peso.</span></li>
-              <li><span class="w">SEM 3</span><span>Suma <b>una serie</b> a los dos primeros ejercicios. Y pruebas el hombro por encima de la cabeza.</span></li>
-              <li><span class="w">SEM 4</span><span>Sube de pesa donde puedas, o <b>baja el descanso 15 s</b>.</span></li>
-              <li><span class="w">SEM 5</span><span>Semana suave: mitad de series. Y vuelves a empezar con más peso.</span></li>
-            </ul>
-          </div>
-          <div class="card">
-            <p class="card-label">Innegociables</p>
-            <ul class="rules">
-              <li><span class="w">HOMBRO</span><span>Nada por encima de la cabeza las semanas 1 y 2. <b>Remo posterior con banda todos los días</b>, 3 × 15.</span></li>
-              <li><span class="w">CREATINA</span><span>5 g diarios, también los días que no entrenas. Te va a <b>subir 1 kg de agua</b> la primera semana. No la dejes.</span></li>
-              <li><span class="w">BÁSCULA</span><span>Cada mañana, pero <b>te quedas con el promedio semanal</b>. Nunca con un solo día.</span></li>
-              <li><span class="w">CINTA</span><span>Cintura, cadera, muslo y brazo, <b>una vez por semana</b>. Aquí se ve lo que la báscula esconde.</span></li>
-              <li><span class="w">DOMINGO</span><span>30 min corriendo suave. Tienes que <b>poder hablar</b> mientras corres.</span></li>
-            </ul>
-          </div>
-        </section>
 
 
         <!-- ═════ PROGRESO ═════ -->
@@ -691,6 +659,31 @@ img{max-width:100%;}
             <p class="disc">Es una estimación por fórmula, no una medición. <strong>El déficit lo hace la comida, no este número</strong> — nunca te comas lo que crees que quemaste. Sirve para comparar sesiones entre sí, nada más.</p>
           </div>
 
+          <div class="card">
+            <p class="card-label">Lo que comes cada día</p>
+            <div class="macros" style="margin-bottom:0">
+            <div class="macro"><div class="k">Comer al día</div><div class="v">1.450<small>kcal</small></div></div>
+          </div>
+          <div class="card">
+            <p class="card-label">La progresión de estas 4 semanas</p>
+            <ul class="rules">
+              <li><span class="w">SEM 1</span><span>Aprender y anotar. Deja <b>3 reps en el tanque</b> en cada serie.</span></li>
+              <li><span class="w">SEM 2</span><span>Suma <b>2 repeticiones</b> a cada serie, mismo peso.</span></li>
+              <li><span class="w">SEM 3</span><span>Suma <b>una serie</b> a los dos primeros ejercicios. Y pruebas el hombro por encima de la cabeza.</span></li>
+              <li><span class="w">SEM 4</span><span>Sube de pesa donde puedas, o <b>baja el descanso 15 s</b>.</span></li>
+              <li><span class="w">SEM 5</span><span>Semana suave: mitad de series. Y vuelves a empezar con más peso.</span></li>
+            </ul>
+          </div>
+          <div class="card">
+            <p class="card-label">Innegociables</p>
+            <ul class="rules">
+              <li><span class="w">HOMBRO</span><span>Nada por encima de la cabeza las semanas 1 y 2. <b>Remo posterior con banda todos los días</b>, 3 × 15.</span></li>
+              <li><span class="w">CREATINA</span><span>5 g diarios, también los días que no entrenas. Te va a <b>subir 1 kg de agua</b> la primera semana. No la dejes.</span></li>
+              <li><span class="w">BÁSCULA</span><span>Cada mañana, pero <b>te quedas con el promedio semanal</b>. Nunca con un solo día.</span></li>
+              <li><span class="w">CINTA</span><span>Cintura, cadera, muslo y brazo, <b>una vez por semana</b>. Aquí se ve lo que la báscula esconde.</span></li>
+              <li><span class="w">DOMINGO</span><span>30 min corriendo suave. Tienes que <b>poder hablar</b> mientras corres.</span></li>
+            </ul>
+          </div>
           <button class="btn ghost" type="button" id="pr-export">Exportar mis datos</button>
           <p class="disc">Tu registro vive en este dispositivo. Si entrenas con el móvil, ahí se queda. Exporta de vez en cuando para no perderlo.</p>
         </section>
@@ -711,17 +704,9 @@ img{max-width:100%;}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8.5 2.5v4M15.5 2.5v4"/></svg>
           <span class="lb">Semana</span>
         </button>
-        <button class="tab" role="tab" aria-selected="false" data-go="entreno">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6M7 6.5v11M17 6.5v11M20 9v6M7 12h10"/></svg>
-          <span class="lb">Entreno</span>
-        </button>
         <button class="tab" role="tab" aria-selected="false" data-go="progreso">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="m7.5 15 3.5-4.5 3 2.5 4.5-6"/></svg>
           <span class="lb">Progreso</span>
-        </button>
-        <button class="tab" role="tab" aria-selected="false" data-go="yo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c0-3.6 3.2-6 7.2-6s7.2 2.4 7.2 6"/></svg>
-          <span class="lb">Yo</span>
         </button>
       </nav>
 
@@ -746,9 +731,9 @@ img{max-width:100%;}
   var CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.4 3.4 3.4L13 4.8"/></svg>';
   var CHEV  = '<svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 2.5 5.5 5.5L6 13.5"/></svg>';
 
-  var views = {}, TAB_OF = {semana:'semana', dia:'semana', entreno:'entreno', ficha:'semana',
-                           progreso:'progreso', yo:'yo'};
-  ['semana','dia','entreno','ficha','progreso','yo'].forEach(function(k){ views[k] = document.getElementById('v-' + k); });
+  var views = {}, TAB_OF = {semana:'semana', dia:'semana', entreno:'semana', ficha:'semana',
+                           progreso:'progreso'};
+  ['semana','dia','entreno','ficha','progreso'].forEach(function(k){ views[k] = document.getElementById('v-' + k); });
   var appEl = document.getElementById('app');
 
   var progKey = 'completo', dayIdx = 0, exIdx = 0, fichaFrom = 'dia';
@@ -825,7 +810,13 @@ img{max-width:100%;}
         return '<span><img src="' + LIB[e.k].g + '" alt=""></span>';
       }).join('');
       if (day.ex.length > 5) strip += '<span class="more">+' + (day.ex.length - 5) + '</span>';
-      var hecho = hechoHoy(progKey, i) ? '<span class="donetag">Hecho hoy</span>' : '';
+      var hecho = '';
+      if (hechoHoy(progKey, i)) hecho = '<span class="donetag">Hecho hoy</span>';
+      else {
+        var l = DB.log[today() + '/' + progKey + '/' + i] || {};
+        var n = Object.keys(l).filter(function(x){ return l[x].done; }).length;
+        if (n) hecho = '<span class="donetag curso">' + n + ' series hechas</span>';
+      }
       html += '<button class="daycard" type="button" data-day="' + i + '">' +
         '<div class="top"><span class="dayn">D' + (i + 1) + '</span><span class="t">' + day.t + '</span>' + hecho + '</div>' +
         '<div class="meta" style="margin-bottom:10px">' + day.ex.length + ' ejercicios · ' + sets + ' series · ~' + day.min + ' min</div>' +
@@ -1018,11 +1009,7 @@ img{max-width:100%;}
     b.addEventListener('click', function(){ if (b.dataset.back === 'dia') stopRest(); go(b.dataset.back); });
   });
   document.querySelectorAll('[data-go]').forEach(function(b){
-    b.addEventListener('click', function(){
-      var t = b.dataset.go;
-      if (t === 'entreno' && !totalSets) { openDay(dayIdx); return; }
-      go(t);
-    });
+    b.addEventListener('click', function(){ go(b.dataset.go); });
   });
 
 
@@ -1031,8 +1018,9 @@ img{max-width:100%;}
     var sem = sesionesDeEstaSemana();
     document.getElementById('pr-week-n').textContent = sem;
     document.getElementById('pr-total').textContent = DB.sessions.length;
-    document.getElementById('pr-week').textContent =
-      'Desde el ' + lunes(new Date()).getDate() + ' · ' + DB.sessions.length + ' sesiones en total';
+    document.getElementById('pr-week').textContent = DB.sessions.length
+      ? 'Llevas ' + DB.sessions.length + ' sesiones registradas'
+      : 'Aún sin entrenos · empieza uno desde Semana';
 
     // racha de semanas con 3 o más sesiones
     var porSem = {};
@@ -1083,7 +1071,7 @@ img{max-width:100%;}
         'font-family="IBM Plex Sans" font-size="12">Apunta tu peso dos días y aquí sale la curva</text>';
       document.getElementById('pr-chart-x').innerHTML = '';
       document.getElementById('pr-w-note').textContent =
-        'Pésate cada mañana en ayunas. Lo que cuenta es el promedio de la semana, nunca el número de un día.';
+        'Escribe tu peso ahí arriba y dale a guardar. Pésate cada mañana en ayunas: con dos días ya te dibujo la curva, con la línea de meta en 53 kg.';
       return;
     }
     var w = 300, h = 130;
@@ -1121,7 +1109,7 @@ img{max-width:100%;}
   function renderMedidas(){
     var M = DB.meas, host = document.getElementById('pr-deltas');
     if (M.length < 2){
-      host.innerHTML = '<li><span>Guarda tus medidas dos semanas seguidas y aquí ves la diferencia.</span></li>';
+      host.innerHTML = '<li><span>Coge la cinta métrica y apunta las cuatro. La próxima semana vuelves y aquí te digo cuántos centímetros bajaste. <b>Esto es lo que va a cambiar antes que la báscula.</b></span></li>';
       return;
     }
     var a = M[0], b = M[M.length - 1];
@@ -1167,8 +1155,7 @@ img{max-width:100%;}
   /* ---------- exportar ---------- */
   var exportBtn = document.getElementById('pr-export');
   exportBtn.addEventListener('click', function(){
-    var nombre = 'hierro-' + today() + '.json';
-    var texto = JSON.stringify(DB, null, 2);
+    var nombre = 'hierro-' + today() + '.json', texto = JSON.stringify(DB, null, 2);
     if (window.claude && typeof window.claude.use === 'function'){
       window.claude.use('downloads').then(function(dl){
         if (dl) dl.save({ filename: nombre, data: texto }).catch(function(){});
@@ -1201,9 +1188,20 @@ img{max-width:100%;}
 </script>
 
 <script>
+/* Registro del service worker.
+   Cuando subo una versión nueva, el navegador la instala y la app se recarga
+   sola una vez para que la veas — sin tener que borrar nada. */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('sw.js', { scope: './' }).catch(function(){});
+    navigator.serviceWorker.register('sw.js', { scope: './', updateViaCache: 'none' })
+      .then(function(reg){ reg.update(); })
+      .catch(function(){});
+  });
+  var recargando = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if (recargando) return;
+    recargando = true;
+    location.reload();
   });
 }
 </script>
