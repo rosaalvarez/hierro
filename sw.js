@@ -4,7 +4,7 @@
    nueva, la ves. Si no hay internet, tira de la copia guardada.
    El resto de archivos van al revés: primero la copia, que es instantánea. */
 
-var CACHE = 'hierro-v4';
+var CACHE = 'hierro-v5';
 var ASSETS = ['./', './index.html', './manifest.webmanifest',
               './icon-180.png', './icon-192.png', './icon-512.png'];
 
