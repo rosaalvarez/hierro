@@ -587,8 +587,18 @@ img{max-width:100%;}
   background:var(--surface);border:1px solid var(--line);border-radius:12px;
   box-shadow:var(--shadow);padding:11px 12px;margin-bottom:9px;
 }
-.wodrow.done{opacity:.45;}
+.wodrow.done{opacity:.5;}
+.wodrow .chkw{
+  width:32px;height:32px;border-radius:50%;flex:none;border:1.5px solid var(--line-2);
+  display:grid;place-items:center;color:transparent;
+  transition:background .16s ease, border-color .16s ease, color .16s ease;
+}
+.wodrow .chkw svg{width:15px;height:15px;}
+.wodrow.done .chkw{background:var(--green);border-color:var(--green);color:#fff;}
+.wodrow .thumb{padding:0;}
+.wodrow .nm{background:none;}
 .wodrow .reps{
+  background:none;padding:0;
   font-family:"Oswald",sans-serif;font-size:26px;font-weight:700;line-height:1;
   color:var(--accent);flex:none;min-width:44px;font-variant-numeric:tabular-nums;
 }
@@ -912,6 +922,7 @@ img{max-width:100%;}
 (function(){
   "use strict";
 
+  var PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   var CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 8.4 3.4 3.4L13 4.8"/></svg>';
   var CHEV  = '<svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 2.5 5.5 5.5L6 13.5"/></svg>';
 
@@ -1122,7 +1133,10 @@ img{max-width:100%;}
     document.getElementById('f-steps').innerHTML = L.p.map(function(t){ return '<li>' + t + '</li>'; }).join('');
     go('ficha');
   }
-  document.getElementById('ficha-back').addEventListener('click', function(){ go(fichaFrom); });
+  document.getElementById('ficha-back').addEventListener('click', function(){
+    go(fichaFrom);
+    if (fichaFrom !== 'entreno') document.getElementById('f-gif').src = PIXEL;
+  });
 
   /* ---------- entreno ---------- */
   function startWorkout(){
@@ -1320,7 +1334,6 @@ img{max-width:100%;}
     clearInterval(timer); timer = null;
     restEl.classList.remove('on');
   }
-  var PIXEL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
   function apagaDemos(){
     // un GIF fuera de pantalla sigue consumiendo; lo soltamos al salir
     document.getElementById('wk-gif').src = PIXEL;
@@ -1575,10 +1588,15 @@ img{max-width:100%;}
       V.rondas + ' rondas · ' + total + ' repeticiones en total · tope ' + V.cap + ' min';
     document.getElementById('rt-lista').innerHTML = R.ex.map(function(x, i){
       var L = LIB[x.k];
-      return '<div class="wodrow"><span class="reps">' + V.reps[i] + '</span>' +
+      return '<button class="wodrow" type="button" data-rtex="' + x.k + '">' +
+        '<span class="reps">' + V.reps[i] + '</span>' +
         '<span class="thumb"><img src="' + L.t + '" alt="" loading="lazy" decoding="async"></span>' +
-        '<span class="nm">' + L.n + (x.nota ? '<small>' + x.nota + '</small>' : '') + '</span></div>';
+        '<span class="nm">' + L.n + '<small>' + (x.nota ? x.nota + ' · ' : '') + 'toca para ver el movimiento</small></span>' +
+        CHEV + '</button>';
     }).join('');
+    document.querySelectorAll('[data-rtex]').forEach(function(b){
+      b.addEventListener('click', function(){ fichaFrom = 'reto'; openFicha(b.dataset.rtex); });
+    });
     document.getElementById('rt-avisotxt').textContent = escala === 'full'
       ? 'Son ' + (R.rondas * 30) + ' flexiones en total. Con el hombro como lo tienes, eso es mucho. Si lo haces, ponlas con las manos en el banco y para en cuanto pinche.'
       : 'Tres rondas y ' + (V.reps[2] * V.rondas) + ' flexiones. Esta es la versión que yo te recomiendo hasta que el hombro esté fino y lleves unas semanas de base.';
@@ -1622,13 +1640,20 @@ img{max-width:100%;}
     document.getElementById('wd-titulo').textContent = 'Ronda ' + (ronda + 1) + ' de ' + V.rondas;
     document.getElementById('wd-lista').innerHTML = R.ex.map(function(x, i){
       var L = LIB[x.k];
-      return '<button class="wodrow' + (hechas[i] ? ' done' : '') + '" type="button" data-wod="' + i + '">' +
-        '<span class="reps">' + V.reps[i] + '</span>' +
-        '<span class="thumb"><img src="' + L.t + '" alt="" loading="lazy" decoding="async"></span>' +
-        '<span class="nm">' + L.n + '<small>' + x.tip + '</small></span></button>';
+      return '<div class="wodrow' + (hechas[i] ? ' done' : '') + '">' +
+        '<button class="reps" type="button" data-wod="' + i + '">' + V.reps[i] + '</button>' +
+        '<button class="thumb" type="button" data-wodex="' + x.k + '" aria-label="Ver cómo se hace ' + L.n + '">' +
+          '<img src="' + L.t + '" alt="" loading="lazy" decoding="async"></button>' +
+        '<button class="nm" type="button" data-wod="' + i + '">' + L.n +
+          '<small>' + x.tip + '</small></button>' +
+        '<button class="chkw" type="button" data-wod="' + i + '" aria-label="Marcar ' + L.n + '">' + CHECK + '</button>' +
+        '</div>';
     }).join('');
     document.querySelectorAll('[data-wod]').forEach(function(b){
       b.addEventListener('click', function(){ marcaWod(+b.dataset.wod); });
+    });
+    document.querySelectorAll('[data-wodex]').forEach(function(b){
+      b.addEventListener('click', function(){ fichaFrom = 'wod'; openFicha(b.dataset.wodex); });
     });
   }
 
