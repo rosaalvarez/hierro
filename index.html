@@ -621,6 +621,40 @@ img{max-width:100%;}
   padding:2px 0 5px;
 }
 
+
+/* ---------- HOY ---------- */
+.hoy{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px;margin-bottom:14px;
+}
+.hoy-top{font-family:"Oswald",sans-serif;font-size:20px;text-transform:uppercase;font-weight:600;line-height:1.1;margin-bottom:6px;}
+.hoy-sum{font-size:13px;color:var(--text-2);margin:0 0 10px;}
+.hoy-sum b{color:var(--accent);font-weight:600;}
+.hoyitem{display:flex;align-items:center;gap:12px;width:100%;padding:11px 0;border-top:1px solid var(--line);}
+.hoyitem:first-child{border-top:0;}
+.hoyitem .ic{
+  width:36px;height:36px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);
+  display:grid;place-items:center;flex:none;color:var(--accent);
+}
+.hoyitem .ic svg{width:18px;height:18px;}
+.hoyitem .tx{flex:1;min-width:0;}
+.hoyitem .tx b{display:block;font-size:14.5px;font-weight:500;line-height:1.25;}
+.hoyitem .tx small{display:block;font-size:11px;color:var(--text-3);font-family:"IBM Plex Mono",monospace;margin-top:2px;}
+.hoyitem .kc{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text-2);text-align:right;flex:none;line-height:1.35;font-variant-numeric:tabular-nums;}
+.hoyitem.done .ic{background:var(--green);border-color:var(--green);color:#fff;}
+.hoyitem.done .tx b{text-decoration:line-through;color:var(--text-3);}
+.antojo{
+  display:flex;align-items:center;justify-content:center;width:100%;margin-top:12px;padding:12px;
+  border-radius:10px;background:var(--gold-wash);color:var(--gold);
+  font-family:"Oswald",sans-serif;font-weight:600;font-size:14px;letter-spacing:.05em;text-transform:uppercase;
+}
+.tm-fase{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;margin-bottom:8px;
+}
+.tm-fase.descanso{color:var(--green);}
+.reloj.tmr .t{font-size:76px;}
+
 /* pestañas */
 .tabs{
   flex:none;display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);
@@ -680,8 +714,15 @@ img{max-width:100%;}
         <!-- ═════ SEMANA ═════ -->
         <section class="view on" id="v-semana">
           <div class="head">
-            <p class="date">Semana 1 de 4</p>
+            <p class="date" id="sem-fecha"></p>
             <h2>Tu semana</h2>
+          </div>
+          <div class="hoy" id="hoy">
+            <div class="hoy-top" id="hoy-dia"></div>
+            <p class="hoy-sum" id="hoy-sum"></p>
+            <div class="bar"><i id="hoy-bar"></i></div>
+            <div id="hoy-lista" style="margin-top:8px"></div>
+            <button class="antojo" type="button" id="antojo">Tengo antojo · camina 15 min</button>
           </div>
           <div class="progsel" role="tablist">
             <button role="tab" aria-selected="true" data-prog="completo">Todo el equipo</button>
@@ -896,6 +937,29 @@ img{max-width:100%;}
           <button class="btn ghost" type="button" id="wd-salir" style="margin-top:14px">Abandonar</button>
         </section>
 
+
+        <!-- ═════ CRONÓMETRO ═════ -->
+        <section class="view" id="v-timer">
+          <div class="head" style="padding-top:14px">
+            <p class="date">Cronómetro</p>
+            <h2 id="tm-titulo"></h2>
+          </div>
+          <div class="reloj tmr">
+            <div class="tm-fase" id="tm-fase"></div>
+            <div class="t" id="tm-t">0:00</div>
+            <div class="cap" id="tm-sub"></div>
+            <div class="bar" style="margin-top:14px"><i id="tm-bar"></i></div>
+          </div>
+          <div class="statrow" style="grid-template-columns:1fr 1fr">
+            <div class="stat"><div class="k">Llevas</div><div class="v"><span id="tm-kcal">0</span><small> kcal</small></div></div>
+            <div class="stat"><div class="k">Grasa</div><div class="v"><span id="tm-gr">0</span><small> g</small></div></div>
+          </div>
+          <div class="exnav">
+            <button type="button" id="tm-pausa">Pausar</button>
+            <button type="button" class="main" id="tm-fin">Terminar</button>
+          </div>
+        </section>
+
       </div>
 
       <div class="rest" id="rest" role="status" aria-live="polite">
@@ -943,8 +1007,8 @@ img{max-width:100%;}
   var CHEV  = '<svg class="chev" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 2.5 5.5 5.5L6 13.5"/></svg>';
 
   var views = {}, TAB_OF = {semana:'semana', dia:'semana', entreno:'semana', ficha:'semana',
-                           reto:'semana', wod:'semana', progreso:'progreso'};
-  ['semana','dia','entreno','ficha','reto','wod','progreso'].forEach(function(k){ views[k] = document.getElementById('v-' + k); });
+                           reto:'semana', wod:'semana', timer:'semana', progreso:'progreso'};
+  ['semana','dia','entreno','ficha','reto','wod','timer','progreso'].forEach(function(k){ views[k] = document.getElementById('v-' + k); });
   var appEl = document.getElementById('app');
 
   var progKey = 'completo', dayIdx = 0, exIdx = 0, fichaFrom = 'dia';
@@ -962,7 +1026,7 @@ img{max-width:100%;}
   function pad(n){ return n < 10 ? '0' + n : '' + n; }
   function iso(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
   function today(){ return iso(new Date()); }
-  function pesoActual(){ return DB.weights.length ? DB.weights[DB.weights.length - 1].kg : 63; }
+  function pesoActual(){ return DB.weights.length ? DB.weights[DB.weights.length - 1].kg : 67; }
   function sesKey(){ return today() + '/' + progKey + '/' + dayIdx; }
 
   // lunes de la semana de una fecha
@@ -993,6 +1057,7 @@ img{max-width:100%;}
     dbSave();
     renderWeek();
     renderProgreso();
+    renderHoy();
   }
 
   function store(k, v){ try { localStorage.setItem('hierro.' + k, v); } catch(e){} }
@@ -1004,6 +1069,7 @@ img{max-width:100%;}
       t.setAttribute('aria-selected', String(t.dataset.go === TAB_OF[name]));
     });
     appEl.scrollTop = 0;
+    if (name === 'semana') renderHoy();
   }
 
   /* ---------- semana ---------- */
@@ -1466,7 +1532,7 @@ img{max-width:100%;}
         'font-family="IBM Plex Sans" font-size="12">Apunta tu peso dos días y aquí sale la curva</text>';
       document.getElementById('pr-chart-x').innerHTML = '';
       document.getElementById('pr-w-note').textContent =
-        'Escribe tu peso ahí arriba y dale a guardar. Pésate cada mañana en ayunas: con dos días ya te dibujo la curva, con la línea de meta en 53 kg.';
+        'Apunta tu peso una vez por semana: mismo día, en ayunas y después del baño. Con dos semanas ya te dibujo la curva.';
       return;
     }
     var w = 300, h = 130;
@@ -1731,6 +1797,179 @@ img{max-width:100%;}
   }
   document.getElementById('wd-salir').addEventListener('click', function(){ terminaWod(false); });
 
+
+  /* ============================================================
+     HOY — lo que toca cada día, con cronómetros.
+     kcal netas = (MET − 1) × kg × horas  (Compendio de Actividad Física 2024)
+     grasa equivalente = kcal / 7,7 por gramo
+     ============================================================ */
+  var MET = { caminar: 4.8, trotar: 7.5, hiit: 11.0 };
+  var SVG0 = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var ICO = {
+    caminar: SVG0 + '<circle cx="13" cy="4.5" r="1.8"/><path d="M11 8.5 8.5 12l3 1.5L10 20M11 8.5l2.5 2.5 3 .5M12 13.5l2.5 2L15 20"/></svg>',
+    trotar:  SVG0 + '<circle cx="14" cy="4.5" r="1.8"/><path d="M12 8.5 8 11l1 3M12 8.5l3 3 3.5-.5M11.5 13l3 2-1.5 5M11.5 13 8 17l-3-.5"/></svg>',
+    hiit:    SVG0 + '<path d="M13 3 6 13h5l-1 8 7-10h-5z"/></svg>',
+    fuerza:  SVG0 + '<path d="M4 9v6M7 6.5v11M17 6.5v11M20 9v6M7 12h10"/></svg>'
+  };
+
+  function kcalNeta(tipo, segundos){ return Math.round((MET[tipo] - 1) * pesoActual() * (segundos / 3600)); }
+  function gramos(k){ return Math.round(k / 7.7); }
+  function fmtT(seg){ seg = Math.max(0, Math.round(seg)); var m = Math.floor(seg / 60), x = seg % 60; return m + ':' + (x < 10 ? '0' : '') + x; }
+  function hoyReg(){
+    if (!DB.hoy || typeof DB.hoy !== 'object') DB.hoy = {};
+    var t = today();
+    if (!DB.hoy[t]) DB.hoy[t] = { items: {}, antojos: 0, kcalAntojos: 0 };
+    return DB.hoy[t];
+  }
+
+  function planDeHoy(){
+    var d = dowHoy(), L = [];
+    if (d < 5){
+      var dia = PROGRAMS[progKey].days[d];
+      L.push({ id:'am', tipo:'caminar', min:30, n:'Caminata en ayunas', s:'Frases cortas · 120–135 pulsaciones' });
+      L.push({ id:'fuerza', tipo:'fuerza', n:'Pesas: ' + dia.t, s:'~' + dia.min + ' min · toca para empezar' });
+      if (d === 0 || d === 2 || d === 4)
+        L.push({ id:'hiit', tipo:'hiit', min:15, n:'Cuerda o burpees', s:'30 s a tope · 30 s descanso · 15 rondas' });
+      L.push({ id:'pm', tipo:'caminar', min:30, n:'Caminata de la tarde', s:'Paso rápido' });
+    } else if (d === 5){
+      L.push({ id:'largo', tipo:'caminar', min:60, n:'Caminata larga', s:'60 min a paso rápido · hoy no hay pesas' });
+    } else {
+      L.push({ id:'trote', tipo:'trotar', min:30, n:'Trote suave', s:'Que puedas hablar mientras trotas' });
+      L.push({ id:'pm', tipo:'caminar', min:30, n:'Caminata', s:'Paso rápido' });
+    }
+    return L;
+  }
+  function kcalItem(it){
+    if (it.tipo === 'fuerza'){
+      var day = PROGRAMS[progKey].days[dowHoy()];
+      return Math.round((day.met || 6) * pesoActual() * (day.min / 60));
+    }
+    return kcalNeta(it.tipo, it.min * 60);
+  }
+  function itemHecho(it){
+    if (it.tipo === 'fuerza') return hechoHoy(progKey, dowHoy());
+    var r = hoyReg().items[it.id];
+    return !!(r && r.done);
+  }
+
+  function renderHoy(){
+    if (!document.getElementById('hoy')) return;
+    var plan = planDeHoy(), R = hoyReg(), total = 0, hecho = 0;
+    var filas = plan.map(function(it){
+      var k = kcalItem(it), ok = itemHecho(it);
+      total += k;
+      if (ok) hecho += (it.tipo === 'fuerza' || !R.items[it.id]) ? k : (R.items[it.id].kcal || k);
+      else if (R.items[it.id]) hecho += R.items[it.id].kcal || 0;
+      return '<button class="hoyitem' + (ok ? ' done' : '') + '" type="button" data-hoy="' + it.id + '">' +
+        '<span class="ic">' + (ok ? CHECK : ICO[it.tipo]) + '</span>' +
+        '<span class="tx"><b>' + it.n + '</b><small>' + it.s + '</small></span>' +
+        '<span class="kc">' + k + ' kcal<br>' + gramos(k) + ' g grasa</span></button>';
+    }).join('');
+    hecho += R.kcalAntojos || 0;
+
+    var f = new Date();
+    try { document.getElementById('sem-fecha').textContent = f.toLocaleDateString('es-CO', { day:'numeric', month:'long' }); } catch(e){}
+    document.getElementById('hoy-dia').textContent = 'Hoy · ' + DIAS[dowHoy()];
+    document.getElementById('hoy-sum').innerHTML =
+      'Llevas <b>' + hecho + ' de ' + total + ' kcal</b> · ' + gramos(hecho) + ' de ' + gramos(total) + ' g de grasa' +
+      (R.antojos ? ' · ' + R.antojos + (R.antojos > 1 ? ' antojos frenados' : ' antojo frenado') : '');
+    document.getElementById('hoy-bar').style.transform = 'scaleX(' + Math.min(1, total ? hecho / total : 0) + ')';
+    document.getElementById('hoy-lista').innerHTML = filas;
+
+    document.querySelectorAll('[data-hoy]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var it = planDeHoy().filter(function(x){ return x.id === b.dataset.hoy; })[0];
+        if (!it) return;
+        if (it.tipo === 'fuerza'){ openDay(dowHoy()); return; }
+        if (itemHecho(it)){
+          if (confirm('¿Desmarcar "' + it.n + '"?')){ delete hoyReg().items[it.id]; dbSave(); renderHoy(); }
+          return;
+        }
+        abreTimer(it, false);
+      });
+    });
+  }
+
+  /* ---------- cronómetro de caminata, trote e intervalos ---------- */
+  var T = null;
+  function transcurrido(){
+    var ahora = T.desde ? T.desde : Date.now();
+    return Math.max(0, (ahora - T.t0 - T.pausa) / 1000);
+  }
+  function abreTimer(it, esAntojo){
+    desbloqueaAudio(); pidePantalla(); stopRest();
+    if (T) clearInterval(T.timer);
+    T = { it: it, antojo: !!esAntojo, t0: Date.now(), pausa: 0, desde: 0, fase: null, ronda: -1, ult: '' };
+    document.getElementById('tm-titulo').textContent = it.n;
+    document.getElementById('tm-pausa').textContent = 'Pausar';
+    if (it.tipo === 'hiit') pitido(1320, 0.22, 0.55);
+    T.timer = setInterval(ticT, 250);
+    ticT();
+    go('timer');
+  }
+  function ticT(){
+    if (!T) return;
+    var it = T.it, tot = it.min * 60, e = Math.min(tot, transcurrido()), quedan = tot - e;
+    var faseEl = document.getElementById('tm-fase'), sub = document.getElementById('tm-sub');
+
+    if (it.tipo === 'hiit'){
+      var ciclo = Math.floor(e / 60), dentro = e - ciclo * 60, trabajo = dentro < 30;
+      var fase = trabajo ? 'trabajo' : 'descanso';
+      var restoFase = Math.ceil((trabajo ? 30 : 60) - dentro);
+      if (T.fase !== null && (fase !== T.fase || ciclo !== T.ronda) && quedan > 0){
+        if (trabajo){ pitido(880, 0.16, 0.5); setTimeout(function(){ pitido(1320, 0.22, 0.55); }, 180); }
+        else pitido(660, 0.28, 0.45);
+      }
+      T.fase = fase; T.ronda = ciclo;
+      var marca = fase + ciclo + '-' + restoFase;
+      if (restoFase <= 3 && restoFase > 0 && T.ult !== marca && quedan > 0){ T.ult = marca; pitido(520, 0.07, 0.25); }
+      faseEl.textContent = trabajo ? '¡A tope!' : 'Descansa';
+      faseEl.className = 'tm-fase' + (trabajo ? '' : ' descanso');
+      document.getElementById('tm-t').textContent = fmtT(restoFase);
+      sub.textContent = 'Ronda ' + Math.min(15, ciclo + 1) + ' de 15 · quedan ' + fmtT(quedan);
+    } else {
+      faseEl.textContent = it.tipo === 'trotar' ? 'Trota suave' : 'Camina rápido';
+      faseEl.className = 'tm-fase';
+      document.getElementById('tm-t').textContent = fmtT(quedan);
+      sub.textContent = T.desde ? 'En pausa' : (it.tipo === 'trotar' ? 'Que puedas hablar' : 'Frases cortas, respiración agitada');
+    }
+
+    var k = kcalNeta(it.tipo, e);
+    document.getElementById('tm-kcal').textContent = k;
+    document.getElementById('tm-gr').textContent = gramos(k);
+    document.getElementById('tm-bar').style.transform = 'scaleX(' + (tot ? e / tot : 0) + ')';
+    if (e >= tot) cierraTimer(true);
+  }
+  function cierraTimer(completo){
+    if (!T) return;
+    clearInterval(T.timer);
+    var it = T.it, e = Math.min(it.min * 60, transcurrido()), k = kcalNeta(it.tipo, e);
+    var R = hoyReg();
+    if (T.antojo){
+      if (e >= 60){ R.antojos = (R.antojos || 0) + 1; R.kcalAntojos = (R.kcalAntojos || 0) + k; }
+    } else if (e >= 60){
+      R.items[it.id] = { kcal: k, secs: Math.round(e), done: completo || e >= it.min * 60 * 0.8 };
+    }
+    if (completo) avisoFinal();
+    dbSave();
+    T = null;
+    sueltaPantalla();
+    go('semana');
+  }
+  document.getElementById('tm-pausa').addEventListener('click', function(){
+    if (!T) return;
+    if (T.desde){ T.pausa += Date.now() - T.desde; T.desde = 0; this.textContent = 'Pausar'; }
+    else { T.desde = Date.now(); this.textContent = 'Seguir'; }
+    ticT();
+  });
+  document.getElementById('tm-fin').addEventListener('click', function(){ cierraTimer(false); });
+  document.getElementById('antojo').addEventListener('click', function(){
+    abreTimer({ id:'antojo', tipo:'caminar', min:15, n:'Antojo: camina 15 min', s:'' }, true);
+  });
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible' && T){ pidePantalla(); ticT(); }
+  });
+
   /* ---------- arranque ---------- */
   var savedProg = load('prog');
   if (savedProg && PROGRAMS[savedProg]){
@@ -1741,9 +1980,11 @@ img{max-width:100%;}
   }
   dbLoad();
   if (!Array.isArray(DB.retos)) DB.retos = [];
+  if (!DB.hoy || typeof DB.hoy !== 'object') DB.hoy = {};
   renderWeek();
   renderRetos();
   renderProgreso();
+  renderHoy();
 })();
 </script>
 
